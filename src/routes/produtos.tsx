@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
 import { useMemo, useState } from "react";
 import { Filter, X } from "lucide-react";
@@ -7,12 +6,17 @@ import { products, needs, type Need } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
 
 const searchSchema = z.object({
-  categoria: z.enum(["Cães", "Gatos", "Higiene", "Petiscos"]).optional().catch(undefined),
-  necessidade: z.string().optional().catch(undefined),
+  categoria: z.enum(["Cães", "Gatos", "Higiene", "Petiscos"]).optional(),
+  necessidade: z.string().optional(),
 });
 
+type ProdutosSearch = z.infer<typeof searchSchema>;
+
 export const Route = createFileRoute("/produtos")({
-  validateSearch: zodValidator(searchSchema),
+  validateSearch: (input: Record<string, unknown>): ProdutosSearch => {
+    const r = searchSchema.safeParse(input);
+    return r.success ? r.data : {};
+  },
   component: ProdutosPage,
   head: () => ({
     meta: [
