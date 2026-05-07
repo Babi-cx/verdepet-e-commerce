@@ -39,7 +39,7 @@ function ProdutosPage() {
   ), [categoria, selected]);
 
   const setNeed = (n: Need | "") => {
-    navigate({ search: (prev) => ({ ...prev, necessidade: n || undefined }) });
+    navigate({ search: (prev: ProdutosSearch) => ({ ...prev, necessidade: n || undefined }) });
     setMobileOpen(false);
   };
 
