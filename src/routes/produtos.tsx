@@ -7,8 +7,8 @@ import { products, needs, type Need } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
 
 const searchSchema = z.object({
-  categoria: fallback(z.enum(["Cães", "Gatos", "Higiene", "Petiscos"]).optional(), undefined),
-  necessidade: fallback(z.string().optional(), undefined),
+  categoria: z.enum(["Cães", "Gatos", "Higiene", "Petiscos"]).optional().catch(undefined),
+  necessidade: z.string().optional().catch(undefined),
 });
 
 export const Route = createFileRoute("/produtos")({
